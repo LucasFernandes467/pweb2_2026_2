@@ -1,6 +1,9 @@
+@extends('main')
+@section('titulo','Listagem de Alunos')
+@section('conteudo')
 <div class="row">
 
-    <h3>Listagem de Usuário</h3>
+    <h3>Listagem de Alunos</h3>
     <form action="UsuarioList.php" method="post">
         <div class="row">
             <div class="col-2">
@@ -17,7 +20,7 @@
             </div>
             <div class="col-5">
                 <button type="submit" class="btn btn-primary">Buscar</button>
-                <a href="./UsuarioForm.php" class="btn btn-success"> Novo</a>
+                <a href="{{ url('aluno/create')}}" class="btn btn-success"> Novo</a>
             </div>
         </div>
     </form>
@@ -38,25 +41,24 @@
             </tr>
         </thead>
         <tbody>
-            <?php
-            foreach ($dados as $item) {
-                echo "<tr>
+
+            @foreach ($dados as $item)
+            <tr>
                 <th scope='row'>$item->id</th>
-                <td>$item->nome</td>
-                <td>$item->telefone</td>
-                <td>$item->email</td>
+                <td>{[$item->nome]}</td>
+                <td>{[$item->cpf]}</td>
+                <td>{[$item->telefone]}</td>
                 <td>
                     <a class='btn btn-warning' title='Editar'
                         href='./UsuarioForm.php?id=$item->id'>Editar</a>
                 </td>
                 <td>
                     <a class='btn btn-danger' title='Exclur'
-                        onclick='return confirm(\"Deseja Excluir?\")'
                         href='./UsuarioList.php?id=$item->id'>Deletar</a>
                 </td>
-            </tr>";
-            }
-            ?>
+            </tr>
+            @endforeach
         </tbody>
     </table>
 </div>
+@stop
