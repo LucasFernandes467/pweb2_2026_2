@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Apps\Models\Aluno;
+use App\Models\Aluno;
 
 class AlunoSeeder extends Seeder
 {
