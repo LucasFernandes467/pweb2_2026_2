@@ -29,10 +29,16 @@ class AlunoController extends Controller
             'nome' => 'required',
             'cpf' => 'required',
             'categoria_id' => 'required',
+            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+
         ], [
             'nome.required' => "O :attribute é obrigatorio",
             'cpf.required' => "O :attribute é obrigatorio",
-            'categoria_id.required' => "O :attribute é obrigatorio"
+            'categoria_id.required' => "O :attribute é obrigatorio",
+            'imagem.mimes' => "O :attribute deve ser das extensões: jpeg, png, jpg, gif, svg",
+            'imagem.image' => "O :attribute deve ser enviado",
+
+
         ]);
     }
 
@@ -41,7 +47,16 @@ class AlunoController extends Controller
         //dd($request->all());
         $this->validateForm($request);
 
-        Aluno::create($request->all());
+        $data = $request->all();
+        $image = $request->file('imagem');
+        if ($image) {
+            $nome_imagem = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $diretorio = "imagems/aluno/";
+            $image->storeAs($diretorio . $nome_imagem, 'public');
+            $data['imagem'] = $diretorio . $nome_imagem;
+        }
+
+        Aluno::create($data);
 
         return redirect('aluno')->with("success", 'Registro Salvo com sucesso!');
     }
@@ -54,8 +69,7 @@ class AlunoController extends Controller
         // dd($data);
         //return view('aluno.form')->with(['data' => $data]);
         return view('aluno.form', [
-            compact('data'),
-            compact('categorias'),
+            compact('data, categorias'),
         ]);
     }
 
@@ -65,7 +79,18 @@ class AlunoController extends Controller
         //dd($request->all());
         $this->validateForm($request);
 
-        Aluno::find($id)->update($request->all());
+        $data = $request->all();
+        $image = $request->file('imagem');
+        if ($image) {
+            $nome_imagem = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $diretorio = "imagems/aluno/";
+            $image->storeAs($diretorio . $nome_imagem, 'public');
+            $data['imagem'] = $diretorio . $nome_imagem;
+        }
+
+        Aluno::create($data);
+
+        Aluno::find($id)->update($data);
 
         return redirect('aluno')->with("success", 'Registro Atualizado com sucesso!');
     }

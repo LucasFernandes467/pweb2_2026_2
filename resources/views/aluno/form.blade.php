@@ -11,7 +11,7 @@
         @endphp
 
         <h4>Formulário Aluno</h4>
-        <form action="{{ $action }}" method="post">
+        <form action="{{ $action }}" method="post" encptype="multipart/form-data">
             @csrf
             @if (!empty($data->id))
                 @method('PUT')
@@ -42,6 +42,17 @@
                         </option>
                     @endforeach
                 </select>
+
+            <div class="col-6">
+                <label for="imagem">Imagem</label>
+                @php
+                    $nome_imagem = !empty($data->imagem) ? $data->imagem : '';
+                @endphp
+                <img src="/storage/{{ $nome_imagem }}" 
+                class="rounded-circle" width="200px" height="200px" alt="Imagem">
+                <input type="file" name="imagem" class="form-control"
+                    value="{{ old('imagem', $data->imagem ?? '') }}">
+            </div>
 
             </div>
             <div class="mt-2">
