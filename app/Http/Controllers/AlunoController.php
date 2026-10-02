@@ -19,7 +19,7 @@ class AlunoController extends Controller
     {
         $categorias = CategoriaAluno::orderBy('nome')->get();
 
-        return view('aluno.form', compact('categorias'));
+        return view('aluno.form')->with(compact('categorias'));
     }
 
 
@@ -29,16 +29,12 @@ class AlunoController extends Controller
             'nome' => 'required',
             'cpf' => 'required',
             'categoria_id' => 'required',
-            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-
+            'imagem' => 'nullable|image|mimes:png,jpg,jpeg',
         ], [
             'nome.required' => "O :attribute é obrigatorio",
             'cpf.required' => "O :attribute é obrigatorio",
-            'categoria_id.required' => "O :attribute é obrigatorio",
-            'imagem.mimes' => "O :attribute deve ser das extensões: jpeg, png, jpg, gif, svg",
             'imagem.image' => "O :attribute deve ser enviado",
-
-
+            'imagem.mimes' => "O :attribute deve ser das extensões:PNG,JPEG,JPG",
         ]);
     }
 
@@ -48,11 +44,12 @@ class AlunoController extends Controller
         $this->validateForm($request);
 
         $data = $request->all();
-        $image = $request->file('imagem');
-        if ($image) {
-            $nome_imagem = date('YmdHis') . "." . $image->getClientOriginalExtension();
-            $diretorio = "imagems/aluno/";
-            $image->storeAs($diretorio . $nome_imagem, 'public');
+        $imagem = $request->file('imagem');
+
+        if ($imagem) {
+            $nome_imagem = date('YmdiHs') . "." . $imagem->getClientOriginalExtension();
+            $diretorio = "imagem/aluno/";
+            $imagem->storeAs($diretorio, $nome_imagem, 'public');
             $data['imagem'] = $diretorio . $nome_imagem;
         }
 
@@ -66,11 +63,8 @@ class AlunoController extends Controller
         $data = Aluno::find($id);
         $categorias = CategoriaAluno::orderBy('nome')->get();
 
-        // dd($data);
-        //return view('aluno.form')->with(['data' => $data]);
-        return view('aluno.form', [
-            compact('data, categorias'),
-        ]);
+        // dd($categorias);
+        return view('aluno.form')->with(compact('data', 'categorias'));
     }
 
 
@@ -80,15 +74,15 @@ class AlunoController extends Controller
         $this->validateForm($request);
 
         $data = $request->all();
-        $image = $request->file('imagem');
-        if ($image) {
-            $nome_imagem = date('YmdHis') . "." . $image->getClientOriginalExtension();
-            $diretorio = "imagems/aluno/";
-            $image->storeAs($diretorio . $nome_imagem, 'public');
+        $imagem = $request->file('imagem');
+
+        if ($imagem) {
+            $nome_imagem = date('YmdiHs') . "." . $imagem->getClientOriginalExtension();
+            $diretorio = "imagem/aluno/";
+
+            $imagem->storeAs($diretorio, $nome_imagem, 'public');
             $data['imagem'] = $diretorio . $nome_imagem;
         }
-
-        Aluno::create($data);
 
         Aluno::find($id)->update($data);
 
