@@ -7,6 +7,7 @@ Route::get('/', function () {
     return view('main');
 });
 
+############ Aluno ###########
 Route::get('/aluno', [AlunoController::class, 'index']);
 Route::get('/aluno/create', [AlunoController::class, 'create']);
 Route::post(
@@ -33,10 +34,29 @@ Route::post(
     [AlunoController::class, 'search']
 )->name('aluno.search');
 
+######## FIM ALUNO #########
+
+######## CURSO ##########
+
 Route::get(
     '/curso/report',
     [\App\Https\Controllers\CursoController::class, 'report']
 )->name('curso.report');
+
+Route::get(
+    '/curso/report-matriculados',
+    [\App\Https\Controllers\CursoController::class, 'reportMatriculados']
+)->name('curso.reportMatriculados');
+
+Route::get(
+    '/curso/chart',
+    [\App\Https\Controllers\CursoController::class, 'chart']
+)->name('curso.chart');
+
+Route::get(
+    '/curso/chart-qtd-aluno-curso-chart',
+    [\App\Https\Controllers\CursoController::class, 'qtdAlunoCursoChart']
+)->name('curso.qtdAlunoCursoChart');
 
 Route::resource('curso', \App\Http\Controllers\CursoController::class);
 
@@ -50,6 +70,8 @@ Route::post(
     '/curso/search',
     [\App\Http\Controllers\CursoController::class, 'search']
 )->name('curso.search');
+######## FIM CURSO ##########
+
 
 Route::resource('turma', \App\Http\Controllers\TurmaController::class);
 Route::post(

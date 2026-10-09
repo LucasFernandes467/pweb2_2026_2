@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Curso;
 use Illuminate\Http\Request;
-use
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Charts\CursoChart;
 
 class CursoController extends Controller
 {
@@ -126,5 +127,10 @@ class CursoController extends Controller
         $pdf = Pdf::loadView('curso.report, $data');
 
         return $pdf->download('listagem_cursos.pdf');
+    }
+
+    public function chart(CursoChart $chart)
+    {
+        return view('curso.chart', ['chart' => $chart->build()]);
     }
 }
