@@ -1,32 +1,18 @@
-@extends('main')
-@section('titulo', 'Listagem de Cursos')
-@section('conteudo')
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Listagem de Cursos</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
     <div class="row">
 
         <h3>Listagem de Cursos</h3>
-        <form action="{{ route('curso.search') }}" method="post">
-            @csrf
-            <div class="row">
-                <div class="col-2">
-                    <label for="nome">Tipo</label>
-                    <select name="tipo" class="form-select">
-                        <option value="nome">Nome</option>
-                        <option value="cpf">CPF</option>
-                        <option value="telefone">Telefone</option>
-                    </select>
-                </div>
-                <div class="col-5">
-                    <label for="valor">Valor</label>
-                    <input type="text" name="valor" placeholder="Pesquisar..." class="form-control">
-                </div>
-                <div class="col-5">
-                    <button type="submit" class="btn btn-primary">Buscar</button>
-                    <a href="{{ url('curso/create') }}" class="btn btn-success"> Novo</a>
-                    <a href="{{ url('curso/report') }}" class="btn btn-danger"> Relatório</a>
-
-                </div>
-            </div>
-        </form>
 
     </div>
 
@@ -37,11 +23,8 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Nome</th>
-                    <th scope="col">Requisito</th>
                     <th scope="col">Carga Horária</th>
                     <th scope="col">Valor</th>
-                    <th scope="col">Ação</th>
-                    <th scope="col">Ação</th>
                 </tr>
             </thead>
             <tbody>
@@ -51,8 +34,10 @@
                         <td>{{ $item->nome }}</td>
                         <td>{{ $item->requisito }}</td>
                         <td>{{ $item->carga_horaria }}</td>
-                        <td>{{ $item->valor }}</td>
+                        <td>R${{ $item->valor }}</td>
                         <td>
+                    </tr>
+                    @endforeach
                             <a class='btn btn-primary' title='Turmas'
                                 href="{{ route('curso.turmas', $item->id) }}">Ver Turmas {{ $item->turmas->count()}}</a>
                         </td>
@@ -72,4 +57,6 @@
             </tbody>
         </table>
     </div>
-@stop
+</body>
+
+</html>
